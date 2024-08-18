@@ -1,0 +1,15 @@
+# Dockerfile.back
+
+FROM php:8.1-cli
+
+RUN apt-get update && apt-get install -y libpng-dev libjpeg-dev libfreetype6-dev libzip-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install gd mysqli pdo pdo_mysql
+
+WORKDIR /var/www/html
+
+COPY ./Back /var/www/html
+
+EXPOSE 8000
+
+CMD ["php", "-S", "0.0.0.0:8000"]

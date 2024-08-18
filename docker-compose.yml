@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+
+  mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: products_db
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - app-network
+    ports:
+      - "3306:3306"
+  
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.back
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./Back:/var/www/html
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - app-network
+    environment:
+      - MYSQL_HOST=mysql  # Changed to service name `mysql`
+      - MYSQL_DATABASE=products_db
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=admin
+
+  
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.front
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./Front:/app
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mysql-data:
+    driver: local
