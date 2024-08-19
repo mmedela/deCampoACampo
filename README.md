@@ -92,7 +92,8 @@ Make sure you have the following installed:
       cd Front/
       npm install
 
-4. Modify Vite Configuration
+3. Modify Vite Configuration
+   
    Update the vite.config.js file in the front/ directory to point to the local backend instead of the Docker container. Change the target value in the proxy section to point to your backend:
     ```bash
     export default defineConfig({
@@ -107,13 +108,13 @@ Make sure you have the following installed:
        }
      }
    })
-5. Run the Backend
+4. Run the Backend
 
    Navigate to the Front/ directory and run the aplication
     ```bash
       cd Back/
       php -S <YourBackendRout> # localhost:8000, for example
-7. Run the Frontend
+5. Run the Frontend
    ```
    npm run dev
    ```
